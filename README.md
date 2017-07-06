@@ -1,7 +1,7 @@
 # chatmachine
 
-## A chatbot in C++.
+A chatbot in C++.
 
-Contributing
+## Contributing
 
 
