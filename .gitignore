@@ -32,4 +32,4 @@ database/
 # scripts shell
 *.sh
 
-!src/
+!src/*
