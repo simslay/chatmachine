@@ -24,7 +24,7 @@ obj/
 *.exe
 *.out
 *.app
-bin/Debug/chatmachine
+bin/
 
 # Databases
 database/
