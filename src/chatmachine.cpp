@@ -1,3 +1,10 @@
+//
+// Program Name: chatmachine
+// Description: a rudimentary chatbot in c++
+//
+// Author: Simon Grandsire
+//
+
 #include "chatmachine.h"
 #include <iostream>
 #include <string>
