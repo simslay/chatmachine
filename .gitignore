@@ -32,3 +32,6 @@ database/
 # scripts shell
 *.sh
 
+# IDE Files
+*.cbp
+*.layout
