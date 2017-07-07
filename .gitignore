@@ -1,11 +1,5 @@
-# Prerequisites
-*.d
-
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+# Prerequisites and Compiled Object files
+obj/
 
 # Precompiled Headers
 *.gch
@@ -30,3 +24,10 @@
 *.exe
 *.out
 *.app
+chatmachine*
+
+# Databases
+database/
+
+# scripts shell
+*.sh
