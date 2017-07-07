@@ -24,7 +24,7 @@ obj/
 *.exe
 *.out
 *.app
-chatmachine*
+./chatmachine*
 
 # Databases
 database/
@@ -32,4 +32,3 @@ database/
 # scripts shell
 *.sh
 
-!src/*
