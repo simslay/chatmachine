@@ -29,7 +29,7 @@ bin/
 # Databases
 database/
 
-# scripts shell
+# Shell scripts
 *.sh
 
 # IDE Files
