@@ -4,19 +4,19 @@
 using namespace std;
 using namespace aiml;
 
-void CatgeoryList::append(Category* category) {
+void CategoryList::append(Category* category) {
     m_vChildren.push_back(category);
     m_uSize++;
 }
 
-Category* CatgeoryList::child(int index) {
+Category* CategoryList::child(int index) {
 	return m_vChildren[index];
 }
 
-string CatgeoryList::file() {
+string CategoryList::file() {
 	return m_sFile;
 }
 
-unsigned int CatgeoryList::size() {
+unsigned int CategoryList::size() {
 	return m_uSize;
 }

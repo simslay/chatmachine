@@ -6,11 +6,14 @@
 //
 
 #include "chatmachine.h"
+#include "categorylist.h"
 #include <iostream>
 #include <cstdlib>
 #include <time.h>
 #include <string>
 #include <vector>
+#include "tinyxml.h"
+#include "aimlparser.h"
 
 using namespace std;
 
@@ -34,6 +37,9 @@ string dataDir = "database/Basic/";
 string sUserPrompt = "USER> ";
 string sBotPrompt = "CHATMACHINE> ";
 
+CategoryList* cl;
+vector<CategoryList*> cls;
+
 int main()
 {
     cout << "Chatmachine v2.0 Copyright (C) 2017 Simon Grandsire\n" << endl;
@@ -41,6 +47,8 @@ int main()
     Chatmachine cm("Chatmachine");
 
     cout << "Loading data..." << endl;
+
+
 
     while(1) {
         try {
@@ -127,4 +135,42 @@ void Chatmachine::normalize(string &input) {
     //m_sInput = input;
 
     //m_bInput_prepared = 1;
+}
+
+void Chatmachine::createCategoryLists() {
+    TiXmlDocument doc;
+    TiXmlElement* root;
+    unsigned int aimlFilesSize = basicAimlFilesSize;
+    string* aimlFiles = basicAimlFiles;
+
+    while(m_nFileIndex < aimlFilesSize) {
+        string sAimlFile;
+        const char* aimlFile;
+
+        sAimlFile = dataDir + aimlFiles[m_nFileIndex] + ".aiml";
+        aimlFile = sAimlFile.c_str();
+
+        cl = new CategoryList(aimlFiles[m_nFileIndex]);
+        cls.push_back(cl);
+
+        if (!doc.LoadFile(aimlFile)) {
+            cerr << doc.ErrorDesc() << " " << aimlFile << endl;
+            return;
+        }
+        
+        root = doc.FirstChildElement();
+
+        if (root == NULL) {
+            cerr << "Failed to load file: No root element. " << aimlFile << endl;
+            doc.Clear();
+            return;
+        }
+
+        createCategoryList(cl, root);
+
+        m_nFileIndex++;
+    }
+
+    //to do
+    //cout << cl << endl;
 }

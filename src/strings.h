@@ -29,6 +29,6 @@ string trim(const string& str);
 // supposition : dest size is greater or equal to desPos + length
 void arraycopy(vector<string> src, int srcPos, vector<string> &dest, int destPos, int length);
 // In MinGW std::to_string() does not exist
-string to_string(int i);
+//string to_string(int i); // patch applied
 
 #endif

@@ -16,6 +16,7 @@ public:
 
     void listen();
     void respond();
+    void createCategoryLists();
 
 private:
     void init_random();
