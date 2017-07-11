@@ -20,6 +20,9 @@ obj/
 *.a
 *.lib
 
+# dependances
+*.depend
+
 # Executables
 *.exe
 *.out
