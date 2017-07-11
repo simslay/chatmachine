@@ -20,9 +20,6 @@ obj/
 *.a
 *.lib
 
-# dependances
-*.depend
-
 # Executables
 *.exe
 *.out
@@ -38,3 +35,4 @@ database/
 # IDE Files
 *.cbp
 *.layout
+*.depend
