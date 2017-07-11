@@ -48,7 +48,7 @@ int main()
 
     cout << "Loading data..." << endl;
 
-
+    cm.createCategoryLists();
 
     while(1) {
         try {
@@ -106,7 +106,7 @@ string Chatmachine::get_response(string input) {
     string bestResponse;
 
     bestResponse = get_best_response(input);
-    
+
     return bestResponse;
 }
 
@@ -157,7 +157,7 @@ void Chatmachine::createCategoryLists() {
             cerr << doc.ErrorDesc() << " " << aimlFile << endl;
             return;
         }
-        
+
         root = doc.FirstChildElement();
 
         if (root == NULL) {
