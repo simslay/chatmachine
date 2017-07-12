@@ -114,10 +114,6 @@ string parse_srai(CategoryList* cl, Srai* srai, Pattern* pattern, string input, 
 
     lev_pat_templ lpt = parse_categoryList(cl, sTempl, prevTemplate, mVars);
 
-    //cout << "parse_srai() : templ->toString()=" << templ->toString() << endl;
-
-    //cout << "parse_srai response=" << response << endl;
-
     response = lpt.templ->toString();
 
     return response;
@@ -137,34 +133,13 @@ string parse_star(CategoryList* cl, Star* star, Pattern* pattern, string input, 
 
     split(sPattern, input, vsPattern, vsInput);
 
-    //cout << "parse_star index=" << index << endl;
-
     if (vsPattern[0] != vsInput[0]) {
         index--;
     } else if (index > 1) {
         index += 1 + index - 2;
     }
 
-    //cout << "parse_star vsInput[0]=" << vsInput[0] << endl;
-    //cout << "parse_star vsInput[1]=" << vsInput[1] << endl;
-    //cout << "parse_star vsInput[2]=" << vsInput[2] << endl;
-
-    //cout << "parse_star vsPattern[0]=[" << vsPattern[0] << "]" << endl;
-    //cout << "parse_star vsInput[0]=[" << vsInput[0] << "]" << endl;
-    //cout << "parse_star vsPattern[1]=[" << vsPattern[1] << "]" << endl;
-    //cout << "parse_star vsInput[1]=[" << vsInput[1] << "]" << endl;
-    //cout << "parse_star vsPattern[2]=[" << vsPattern[2] << "]" << endl;
-    //cout << "parse_star vsInput[2]=[" << vsInput[2] << "]" << endl;
-    //cout << "parse_star vsPattern[3]=[" << vsPattern[3] << "]" << endl;
-    //cout << "parse_star vsInput[3]=[" << vsInput[3] << "]" << endl;
-    //cout << "parse_star vsInput[4]=[" << vsInput[4] << "]" << endl;
-    //cout << "parse_star index=" << index << endl;
-
     response = vsInput[index];
-
-    //cout << "parse_star sPattern=" << sPattern << endl;
-    //cout << "parse_star input=" << input << endl;
-    //cout << "parse_star response=[" << response << "]" << endl;
 
     return response;
 }
