@@ -14,6 +14,7 @@
 #include <vector>
 #include "tinyxml.h"
 #include "aimlparser.h"
+#include "xml.h"
 
 using namespace std;
 
@@ -39,6 +40,8 @@ string sBotPrompt = "CHATMACHINE> ";
 
 CategoryList* cl;
 vector<CategoryList*> cls;
+
+map<string, string> mVars;
 
 int main()
 {
@@ -111,7 +114,35 @@ string Chatmachine::get_response(string input) {
 }
 
 string Chatmachine::get_best_response(string input) {
-    return "";
+    vector<lev_pat_templ> levTempls;
+    TiXmlDocument doc;
+    TiXmlElement* root;
+    Template* bestTemplate;
+    Pattern* bestPattern;
+    string bestResponse;
+    unsigned int bestLevDist, bestIndex;
+
+    for(unsigned int i=0, clss=cls.size(); i<clss; ++i) {
+        levTempls.push_back(parse_categoryList(cls[i], input, m_sPrevResponse, mVars));
+    }
+
+    bestLevDist = levTempls[0].patternLevDist;
+    bestIndex = 0;
+
+    for(int i=1, s=levTempls.size(); i<s; ++i) {
+        if (bestLevDist > levTempls[i].patternLevDist && levTempls[i].templ->toString() != "") {
+            bestLevDist = levTempls[i].patternLevDist;
+            bestIndex = i;
+        }
+    }
+
+    bestTemplate = levTempls[bestIndex].templ;
+    bestPattern = levTempls[bestIndex].pat;
+    bestResponse = bestTemplate->toString();
+
+    bestResponse = parse_template(cls[bestIndex], bestPattern, bestTemplate, input, m_sPrevResponse, mVars);
+
+    return bestResponse;
 }
 
 void Chatmachine::setResponse(string response) {
