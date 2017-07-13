@@ -15,6 +15,7 @@ namespace aiml {
         Set (string name, vector<TemplateElement*> elements)
             :TemplateElement(elements), m_sName(name) {}
 
+        string name();
         string toString();
     private:
     private:

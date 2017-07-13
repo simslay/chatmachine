@@ -14,6 +14,7 @@ namespace aiml {
     public:
         Get(string name) :m_sName(name) {}
 
+        string name();
         string toString();
     private:
     private:

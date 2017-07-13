@@ -4,6 +4,10 @@
 using namespace std;
 using namespace aiml;
 
+string Bot::name() {
+	return m_sName;
+}
+
 string Bot::toString() {
-	return "<bot/>";
+	return "<bot" + m_sName + "/>";
 }

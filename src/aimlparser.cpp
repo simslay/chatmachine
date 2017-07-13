@@ -94,6 +94,21 @@ string parse_template(CategoryList* cl, Pattern* pattern, Template* templ, strin
             response += parse_star(cl, star, pattern, input, prevTemplate, mVars) + " ";
         } else if (Bot* bot = dynamic_cast<Bot*>(te)) {
             response += parse_bot(cl, bot, pattern, input, prevTemplate, mVars) + " ";
+        } else if (Get* get = dynamic_cast<Get*>(te)) {
+            response += parse_get(cl, get, pattern, input, prevTemplate, mVars) + " ";
+        } else if (Set* set = dynamic_cast<Set*>(te)) {
+            Star* star;
+
+            for (int j=i+1, s=children.size(); j<s; ++j) {
+                TemplateElement* te2 = children[j];
+
+                if (star = dynamic_cast<Star*>(te2)) {
+                    cout << star << endl;
+                    break;
+                }
+            }
+
+            response += parse_set(cl, set, parse_star(cl, star, pattern, input, prevTemplate, mVars), pattern, input, prevTemplate, mVars) + " ";
         }
     }
 
@@ -103,7 +118,103 @@ string parse_template(CategoryList* cl, Pattern* pattern, Template* templ, strin
 }
 
 string parse_bot(CategoryList* cl, Bot* bot, Pattern* pattern, string input, string prevTemplate, map<string, string> &mVars) {
-    return "bot_value";
+    TiXmlDocument doc;
+    TiXmlElement* root;
+
+    if (!doc.LoadFile("database/Basic/bot.xml")) {
+        cerr << doc.ErrorDesc() << " " << "database/Basic/bot.xml" << endl;
+        return "";
+    }
+
+    root = doc.FirstChildElement();
+
+    if (root == NULL) {
+        cerr << "Failed to load file: No root element. " << "database/Basic/bot.xml" << endl;
+        doc.Clear();
+        return "";
+    }
+
+    TiXmlElement* elem = root->FirstChildElement();
+
+    for(TiXmlElement* e = elem; e; e = e->NextSiblingElement()) {
+        if (e->Attribute("name") == bot->name()) {
+            return e->FirstChild()->ToText()->Value();
+        }
+    }
+
+    return "";
+}
+
+string parse_get(CategoryList* cl, Get* get, Pattern* pattern, string input, string prevTemplate, map<string, string> &mVars) {
+    TiXmlDocument doc;
+    TiXmlElement* root;
+
+    if (!doc.LoadFile("database/Basic/vars.xml")) {
+        cerr << doc.ErrorDesc() << " " << "database/Basic/vars.xml" << endl;
+        return "";
+    }
+
+    root = doc.FirstChildElement();
+
+    if (root == NULL) {
+        cerr << "Failed to load file: No root element. " << "database/Basic/vars.xml" << endl;
+        doc.Clear();
+        return "";
+    }
+
+    TiXmlElement* elem = root->FirstChildElement();
+
+    for(TiXmlElement* e = elem; e; e = e->NextSiblingElement()) {
+        if (e->Attribute("name") == get->name()) {
+            return e->FirstChild()->ToText()->Value();
+        }
+    }
+
+    return "";
+}
+
+string parse_set(CategoryList* cl, Set* set, string starText, Pattern* pattern, string input, string prevTemplate, map<string, string> &mVars) {
+    TiXmlDocument doc;
+    TiXmlElement* root;
+
+    if (!doc.LoadFile("database/Basic/vars.xml")) {
+        cerr << doc.ErrorDesc() << " " << "database/Basic/vars.xml" << endl;
+        return "";
+    }
+
+    root = doc.FirstChildElement();
+
+    if (root == NULL) {
+        cerr << "Failed to load file: No root element. " << "database/Basic/vars.xml" << endl;
+        doc.Clear();
+        return "";
+    }
+
+    TiXmlDocument doc2;
+    TiXmlDeclaration * decl = new TiXmlDeclaration("1.0", "UTF-8", "");
+    TiXmlElement * element = new TiXmlElement("vars");
+    
+    TiXmlElement * e = new TiXmlElement("var");
+    e->SetAttribute("name", set->name().c_str());
+    e->LinkEndChild(new TiXmlText(starText.c_str()));
+
+    element->LinkEndChild(e);
+    doc2.LinkEndChild(decl);
+    doc2.LinkEndChild(element);
+
+    for(TiXmlElement* txe = root->FirstChildElement(); txe; txe = txe->NextSiblingElement()) {
+        TiXmlElement* txe2 = new TiXmlElement(txe->Value());
+
+        txe2->SetAttribute("name", txe->Attribute("name"));
+        string text = txe->GetText();
+        txe2->LinkEndChild(new TiXmlText(text.c_str()));
+
+        element->LinkEndChild(txe2);
+    }
+
+    doc2.SaveFile("database/Basic/vars.xml");
+
+    return "";
 }
 
 string parse_srai(CategoryList* cl, Srai* srai, Pattern* pattern, string input, string prevTemplate, map<string, string> &mVars) {

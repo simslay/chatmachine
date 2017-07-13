@@ -15,6 +15,7 @@ namespace aiml {
         Bot(string name) :m_sName(name) {}
 
         string toString();
+        string name();
     private:
     private:
         string m_sName;

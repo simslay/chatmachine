@@ -32,6 +32,8 @@ lev_pat_templ parse_categoryList(CategoryList* cl, string input, string prevTemp
 lev_pat_templ parse_category(CategoryList* cl, Category* nCategory, string input, string prevTemplate, map<string, string> &mVars);
 string parse_template(CategoryList* cl, Pattern* pattern, Template* templ, string input, string prevTemplate, map<string, string> &mVars);
 string parse_bot(CategoryList* cl, Bot* bot, Pattern* pattern, string input, string prevTemplate, map<string, string> &mVars);
+string parse_get(CategoryList* cl, Get* get, Pattern* pattern, string input, string prevTemplate, map<string, string> &mVars);
+string parse_set(CategoryList* cl, Set* set, string starText, Pattern* pattern, string input, string prevTemplate, map<string, string> &mVars);
 string parse_srai(CategoryList* cl, Srai* srai, Pattern* pattern, string input, string prevTemplate, map<string, string> &mVars);
 string parse_star(CategoryList* cl, Star* star, Pattern* pattern, string input, string prevTemplate, map<string, string> &mVars);
 void createCategoryList(CategoryList* cl, TiXmlElement* root);
