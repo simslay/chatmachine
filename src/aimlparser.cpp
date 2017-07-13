@@ -92,12 +92,18 @@ string parse_template(CategoryList* cl, Pattern* pattern, Template* templ, strin
         } else if (Star* star = dynamic_cast<Star*>(te)) {
             //cout << "parse_template star" << endl;
             response += parse_star(cl, star, pattern, input, prevTemplate, mVars) + " ";
+        } else if (Bot* bot = dynamic_cast<Bot*>(te)) {
+            response += parse_bot(cl, bot, pattern, input, prevTemplate, mVars) + " ";
         }
     }
 
     //cout << response << endl;
 
     return response;
+}
+
+string parse_bot(CategoryList* cl, Bot* bot, Pattern* pattern, string input, string prevTemplate, map<string, string> &mVars) {
+    return "bot_value";
 }
 
 string parse_srai(CategoryList* cl, Srai* srai, Pattern* pattern, string input, string prevTemplate, map<string, string> &mVars) {
@@ -132,6 +138,7 @@ string parse_star(CategoryList* cl, Star* star, Pattern* pattern, string input, 
     int i = 0;
 
     //cout << "parse_star() : sPattern=" << sPattern << endl;
+    //cout << "parse_star() : input=" << input << endl;
 
     split(sPattern, input, vsPattern, vsInput);
 

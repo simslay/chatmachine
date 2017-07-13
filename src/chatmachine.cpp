@@ -159,13 +159,13 @@ void Chatmachine::prepare_response(string &resp) {
 
 void Chatmachine::normalize(string &input) {
     //subsitute(input, subs);
-    //toUpper(input);
-    //shrink(input);
-    //insert_spaces(input);
+    toUpper(input);
+    shrink(input);
+    insert_spaces(input);
 
-    //m_sInput = input;
+    m_sInput = input;
 
-    //m_bInput_prepared = 1;
+    m_bInput_prepared = 1;
 }
 
 void Chatmachine::createCategoryLists() {

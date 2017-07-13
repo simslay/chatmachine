@@ -93,7 +93,7 @@ bool split(string pattern, string input, vector<string> &vsPat, vector<string> &
 
     Split(vsPattern, pattern, '*');
 
-    cout << "split() : pattern=" << pattern << endl;
+    //cout << "split() : pattern=" << pattern << endl;
 
     vsPat = vsPattern;
 
