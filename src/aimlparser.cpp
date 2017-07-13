@@ -131,6 +131,8 @@ string parse_star(CategoryList* cl, Star* star, Pattern* pattern, string input, 
     unsigned int index = star->index();
     int i = 0;
 
+    //cout << "parse_star() : sPattern=" << sPattern << endl;
+
     split(sPattern, input, vsPattern, vsInput);
 
     if (vsPattern[0] != vsInput[0]) {

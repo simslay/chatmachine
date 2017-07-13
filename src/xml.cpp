@@ -93,6 +93,8 @@ bool split(string pattern, string input, vector<string> &vsPat, vector<string> &
 
     Split(vsPattern, pattern, '*');
 
+    cout << "split() : pattern=" << pattern << endl;
+
     vsPat = vsPattern;
 
     //cout << "split() : vsPat.size()[" << vsPat.size() << "]" << endl;
@@ -110,6 +112,7 @@ bool split(string pattern, string input, vector<string> &vsPat, vector<string> &
         if (pattern[0] == '*' && vsPattern[i] != "") {
             patternRegexString.append("(.*)");
             patternRegexString.append(vsPattern[i]);
+            //cout << "split() : vsPattern[i][" << vsPattern[i] << "]" << endl;
         } else if (vsPattern[i] != "") {
             patternRegexString.append(vsPattern[i]);
             if (i < s1-1)

@@ -25,6 +25,8 @@ string Pattern::toString() {
     for (int i = 0, n = m_vPattern.size();;) {
 		buffer.append(m_vPattern[i]);
 
+		//cout << "toString() : " << m_vPattern[i] << endl;
+
 		if (++i >= n)
 			break;
 

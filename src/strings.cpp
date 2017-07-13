@@ -96,6 +96,8 @@ int Split(vector<string>& v, string str, char sep) {
 
 	string::size_type stTemp = str.find(sep);
 
+	//cout << "Split() : str=" << str << endl;
+
 	while(stTemp != string::npos)
 	{
 		v.push_back(str.substr(0, stTemp));
