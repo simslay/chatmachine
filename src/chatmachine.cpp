@@ -100,7 +100,7 @@ string basicAimlFiles[] = {
 
 size_t basicAimlFilesSize = sizeof(basicAimlFiles)/sizeof(basicAimlFiles[0]);
 
-string dataDir = "database/Basic/";
+string dataDir = "database/Alice/";
 
 string sUserPrompt = "USER> ";
 string sBotPrompt = "CHATMACHINE> ";
@@ -120,21 +120,15 @@ int main(int argc, char* argv[])
 
     if (argc > 1) {
         if (string(argv[1]) == "basic") {
-            //cout << "strategy[basic]" << endl;
             strategy = "basic";
-            //loadData(basicAimlFiles, basicAimlFilesSize, vLexFields, "database/Basic/");
             dataDir = "database/Basic/";
         } else {
-            //cout << "strategy[alice]" << endl;
             strategy = "alice";
-            //loadData(aliceAimlFiles, aliceAimlFilesSize, vLexFields, "database/Alice/");
             dataDir = "database/Alice/";
         }
     } else {
-        //cout << "strategy[alice]" << endl;
-        strategy = "alice";
-        //loadData(aliceAimlFiles, aliceAimlFilesSize, vLexFields, "database/Alice/");
-        dataDir = "database/Alice/";
+        strategy = "basic";
+        dataDir = "database/Basic/";
     }
 
     cout << "Loading data..." << endl;
