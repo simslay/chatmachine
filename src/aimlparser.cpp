@@ -125,6 +125,17 @@ string parse_template(CategoryList* cl, Pattern* pattern, Template* templ, strin
                     i++;
                 }
             }
+
+            //do other cases:
+            //<condition name="gender">
+            //<li value="female"> attractive.</li>
+            //<li value="male"> handsome.</li>
+            //</condition>
+            //and
+            //<condition>
+            //<li name="gender" value="female"> attractive.</li>
+            //<li> handsome.</li>
+            //</condition>
         }
     }
 
