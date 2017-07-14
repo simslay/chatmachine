@@ -112,16 +112,17 @@ string parse_template(CategoryList* cl, Pattern* pattern, Template* templ, strin
 string parse_bot(CategoryList* cl, Bot* bot, Pattern* pattern, string input, string prevTemplate, map<string, string> &mVars) {
     TiXmlDocument doc;
     TiXmlElement* root;
+    string botPath = "database/bot.xml";
 
-    if (!doc.LoadFile("database/Basic/bot.xml")) {
-        cerr << doc.ErrorDesc() << " " << "database/Basic/bot.xml" << endl;
+    if (!doc.LoadFile(botPath.c_str())) {
+        cerr << doc.ErrorDesc() << " " << botPath << endl;
         return "";
     }
 
     root = doc.FirstChildElement();
 
     if (root == NULL) {
-        cerr << "Failed to load file: No root element. " << "database/Basic/bot.xml" << endl;
+        cerr << "Failed to load file: No root element. " << botPath << endl;
         doc.Clear();
         return "";
     }
@@ -140,16 +141,17 @@ string parse_bot(CategoryList* cl, Bot* bot, Pattern* pattern, string input, str
 string parse_get(CategoryList* cl, Get* get, Pattern* pattern, string input, string prevTemplate, map<string, string> &mVars) {
     TiXmlDocument doc;
     TiXmlElement* root;
+    string varsPath = "database/vars.xml";
 
-    if (!doc.LoadFile("database/Basic/vars.xml")) {
-        cerr << doc.ErrorDesc() << " " << "database/Basic/vars.xml" << endl;
+    if (!doc.LoadFile(varsPath.c_str())) {
+        cerr << doc.ErrorDesc() << " " << varsPath << endl;
         return "";
     }
 
     root = doc.FirstChildElement();
 
     if (root == NULL) {
-        cerr << "Failed to load file: No root element. " << "database/Basic/vars.xml" << endl;
+        cerr << "Failed to load file: No root element. " << varsPath << endl;
         doc.Clear();
         return "";
     }
@@ -168,16 +170,17 @@ string parse_get(CategoryList* cl, Get* get, Pattern* pattern, string input, str
 string parse_set(CategoryList* cl, Set* set, string starText, Pattern* pattern, string input, string prevTemplate, map<string, string> &mVars) {
     TiXmlDocument doc;
     TiXmlElement* root;
+    string varsPath = "database/vars.xml";
 
-    if (!doc.LoadFile("database/Basic/vars.xml")) {
-        cerr << doc.ErrorDesc() << " " << "database/Basic/vars.xml" << endl;
+    if (!doc.LoadFile(varsPath.c_str())) {
+        cerr << doc.ErrorDesc() << " " << varsPath << endl;
         return "";
     }
 
     root = doc.FirstChildElement();
 
     if (root == NULL) {
-        cerr << "Failed to load file: No root element. " << "database/Basic/vars.xml" << endl;
+        cerr << "Failed to load file: No root element. " << varsPath << endl;
         doc.Clear();
         return "";
     }
@@ -185,7 +188,7 @@ string parse_set(CategoryList* cl, Set* set, string starText, Pattern* pattern, 
     TiXmlDocument doc2;
     TiXmlDeclaration * decl = new TiXmlDeclaration("1.0", "UTF-8", "");
     TiXmlElement * element = new TiXmlElement("vars");
-    
+
     TiXmlElement * e = new TiXmlElement("var");
     e->SetAttribute("name", set->name().c_str());
     e->LinkEndChild(new TiXmlText(starText.c_str()));
@@ -204,7 +207,7 @@ string parse_set(CategoryList* cl, Set* set, string starText, Pattern* pattern, 
         element->LinkEndChild(txe2);
     }
 
-    doc2.SaveFile("database/Basic/vars.xml");
+    doc2.SaveFile(varsPath.c_str());
 
     return starText;
 }
