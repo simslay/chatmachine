@@ -18,6 +18,73 @@
 
 using namespace std;
 
+string aliceAimlFiles[] = {
+    "ai",
+    "alice",
+    "astrology",
+    "atomic",
+    "badanswer",
+    "biography",
+    "bot",
+    "bot_profile",
+    "client",
+    "client_profile",
+    "computers",
+    "continuation",
+    //"date",
+    "default",
+    "drugs",
+    "emotion",
+    "food",
+    "geography",
+    "gossip",
+    "history",
+    "humor",
+    "imponderables",
+    "inquiry",
+    "interjection",
+    "iu",
+    "knowledge",
+    "literature",
+    "loebner10",
+    "money",
+    "movies",
+    "mp0",
+    "mp1",
+    "mp2",
+    "mp3",
+    "mp4",
+    "mp5",
+    "mp6",
+    "music",
+    "numbers",
+    "personality",
+    "phone",
+    "pickup",
+    "politics",
+    "primeminister",
+    "primitive-math",
+    "psychology",
+    "reduction0.safe",
+    "reduction1.safe",
+    "reduction2.safe",
+    "reduction3.safe",
+    "reduction4.safe",
+    "reductions-update",
+    "religion",
+    "salutations",
+    "science",
+    "sex",
+    "sports",
+    "stack",
+    "stories",
+    "that",
+    //"update1", //Error reading end tag
+    "wallace"
+};
+
+size_t aliceAimlFilesSize = sizeof(aliceAimlFiles)/sizeof(aliceAimlFiles[0]);
+
 string basicAimlFiles[] = {
     "bot",
     "condition",
@@ -43,11 +110,32 @@ vector<CategoryList*> cls;
 
 map<string, string> mVars;
 
-int main()
+string strategy = "alice";
+
+int main(int argc, char* argv[])
 {
     cout << "Chatmachine v2.0 Copyright (C) 2017 Simon Grandsire\n" << endl;
 
     Chatmachine cm("Chatmachine");
+
+    if (argc > 1) {
+        if (string(argv[1]) == "basic") {
+            //cout << "strategy[basic]" << endl;
+            strategy = "basic";
+            //loadData(basicAimlFiles, basicAimlFilesSize, vLexFields, "database/Basic/");
+            dataDir = "database/Basic/";
+        } else {
+            //cout << "strategy[alice]" << endl;
+            strategy = "alice";
+            //loadData(aliceAimlFiles, aliceAimlFilesSize, vLexFields, "database/Alice/");
+            dataDir = "database/Alice/";
+        }
+    } else {
+        //cout << "strategy[alice]" << endl;
+        strategy = "alice";
+        //loadData(aliceAimlFiles, aliceAimlFilesSize, vLexFields, "database/Alice/");
+        dataDir = "database/Alice/";
+    }
 
     cout << "Loading data..." << endl;
 
@@ -171,8 +259,8 @@ void Chatmachine::normalize(string &input) {
 void Chatmachine::createCategoryLists() {
     TiXmlDocument doc;
     TiXmlElement* root;
-    unsigned int aimlFilesSize = basicAimlFilesSize;
-    string* aimlFiles = basicAimlFiles;
+    unsigned int aimlFilesSize = strategy == "basic" ? basicAimlFilesSize : aliceAimlFilesSize;
+    string* aimlFiles = strategy == "basic" ? basicAimlFiles : aliceAimlFiles;
 
     while(m_nFileIndex < aimlFilesSize) {
         string sAimlFile;
