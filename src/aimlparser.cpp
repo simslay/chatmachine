@@ -101,12 +101,24 @@ string parse_template(CategoryList* cl, Pattern* pattern, Template* templ, strin
             Star* star = dynamic_cast<Star*>(childr[0]);
 
             response += parse_set(cl, set, parse_star(cl, star, pattern, input, prevTemplate, mVars), pattern, input, prevTemplate, mVars) + " ";
+        } else if (Think* think = dynamic_cast<Think*>(te)) {
+            response += parse_think(cl, think, pattern, input, prevTemplate, mVars) + " ";
         }
     }
 
     //cout << response << endl;
 
     return response;
+}
+
+string parse_think(CategoryList* cl, Think* think, Pattern* pattern, string input, string prevTemplate, map<string, string> &mVars) {
+    vector<TemplateElement*> children = think->children();
+
+    for (int i=0, s=children.size(); i<s; ++i) {
+        
+    }
+
+    return "";
 }
 
 string parse_bot(CategoryList* cl, Bot* bot, Pattern* pattern, string input, string prevTemplate, map<string, string> &mVars) {
