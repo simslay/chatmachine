@@ -136,12 +136,25 @@ string parse_template(CategoryList* cl, Pattern* pattern, Template* templ, strin
             //<li name="gender" value="female"> attractive.</li>
             //<li> handsome.</li>
             //</condition>
+        } else if (Random* random = dynamic_cast<Random*>(te)) {
+            response += parse_random(cl, random, pattern, input, prevTemplate, mVars) + " ";
         }
     }
 
     //cout << response << endl;
 
     return response;
+}
+
+string parse_random(CategoryList* cl, Random* random, Pattern* pattern, string input, string prevTemplate, map<string, string> &mVars) {
+    vector<TemplateElement*> lis = random->children();
+    int n;
+
+    srand((unsigned) time(NULL));
+
+    n = rand() % lis.size();
+
+    return parse_template(cl, pattern, new Template(lis[n]->children()), input, prevTemplate, mVars);
 }
 
 string parse_condition(CategoryList* cl, vector<TemplateElement*> lis, Pattern* pattern, string input, string prevTemplate, map<string, string> &mVars) {
