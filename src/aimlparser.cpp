@@ -97,16 +97,8 @@ string parse_template(CategoryList* cl, Pattern* pattern, Template* templ, strin
         } else if (Get* get = dynamic_cast<Get*>(te)) {
             response += parse_get(cl, get, pattern, input, prevTemplate, mVars) + " ";
         } else if (Set* set = dynamic_cast<Set*>(te)) {
-            Star* star;
-
-            for (int j=i+1, s=children.size(); j<s; ++j) {
-                TemplateElement* te2 = children[j];
-
-                if (star = dynamic_cast<Star*>(te2)) {
-                    cout << star << endl;
-                    break;
-                }
-            }
+            vector<TemplateElement*> childr = te->children();
+            Star* star = dynamic_cast<Star*>(childr[0]);
 
             response += parse_set(cl, set, parse_star(cl, star, pattern, input, prevTemplate, mVars), pattern, input, prevTemplate, mVars) + " ";
         }
@@ -214,7 +206,7 @@ string parse_set(CategoryList* cl, Set* set, string starText, Pattern* pattern, 
 
     doc2.SaveFile("database/Basic/vars.xml");
 
-    return "";
+    return starText;
 }
 
 string parse_srai(CategoryList* cl, Srai* srai, Pattern* pattern, string input, string prevTemplate, map<string, string> &mVars) {
@@ -250,6 +242,7 @@ string parse_star(CategoryList* cl, Star* star, Pattern* pattern, string input, 
 
     //cout << "parse_star() : sPattern=" << sPattern << endl;
     //cout << "parse_star() : input=" << input << endl;
+    //cout << "parse_star() : index=" << index << endl;
 
     split(sPattern, input, vsPattern, vsInput);
 
@@ -260,6 +253,8 @@ string parse_star(CategoryList* cl, Star* star, Pattern* pattern, string input, 
     }
 
     response = vsInput[index];
+
+    //cout << "parse_star() : response=" << response << endl;
 
     return response;
 }

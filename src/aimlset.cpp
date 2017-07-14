@@ -9,5 +9,5 @@ string Set::name() {
 }
 
 string Set::toString() {
-	return "<set></set>";
+	return "<set name=\""+m_sName+"\"></set>";
 }
