@@ -12,6 +12,8 @@ namespace aiml {
         Condition(string name, string value, vector<TemplateElement*> children)
         	:TemplateElement(children), m_sName(name), m_sValue(value) {}
 
+        string name();
+        string value();
         string toString();
     private:
     private:

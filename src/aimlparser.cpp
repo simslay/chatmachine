@@ -84,6 +84,7 @@ string parse_template(CategoryList* cl, Pattern* pattern, Template* templ, strin
         TemplateElement* te = children[i];
 
         if (Text* t = dynamic_cast<Text*>(te)) {
+            //cout << response << endl;
             response += t->toString() + " ";
         } else if (Srai* srai = dynamic_cast<Srai*>(te)) {
             //cout << "parse_template srai" << endl;
@@ -97,18 +98,63 @@ string parse_template(CategoryList* cl, Pattern* pattern, Template* templ, strin
         } else if (Get* get = dynamic_cast<Get*>(te)) {
             response += parse_get(cl, get, pattern, input, prevTemplate, mVars) + " ";
         } else if (Set* set = dynamic_cast<Set*>(te)) {
-            vector<TemplateElement*> childr = te->children();
-            Star* star = dynamic_cast<Star*>(childr[0]);
+            Template* templ = new Template(te->children());
 
-            response += parse_set(cl, set, parse_star(cl, star, pattern, input, prevTemplate, mVars), pattern, input, prevTemplate, mVars) + " ";
+            response += parse_set(cl, set, parse_template(cl, pattern, templ, input, prevTemplate, mVars), pattern, input, prevTemplate, mVars) + " ";
         } else if (Think* think = dynamic_cast<Think*>(te)) {
             response += parse_think(cl, think, pattern, input, prevTemplate, mVars) + " ";
+        } else if (Condition* condition = dynamic_cast<Condition*>(te)) {
+            vector<TemplateElement*> childr = te->children();
+
+            //<condition>
+            //  <li name="state" value="happy">I am happy!</li>
+            //  <li name="state" value="sad">I am sad!</li>
+            //</condition>
+            //or
+            //<condition name="state">
+            //  <li value="happy">I am happy!</li>
+            //  <li value="sad">I am sad!</li>
+            //</condition>
+            if (childr.size() > 0 && dynamic_cast<Li*>(childr[0])) {
+                response += parse_condition(cl, childr, pattern, input, prevTemplate, mVars);
+            //<condition name="state" value="happy">I am happy!</condition>
+            //<condition name="state" value="sad">I am sad!</condition>
+            } else {
+                while(i<s && dynamic_cast<Condition*>(children[i])) {
+                    response += parse_condition(cl, dynamic_cast<Condition*>(children[i]), pattern, input, prevTemplate, mVars);
+                    i++;
+                }
+            }
         }
     }
 
     //cout << response << endl;
 
     return response;
+}
+
+string parse_condition(CategoryList* cl, vector<TemplateElement*> lis, Pattern* pattern, string input, string prevTemplate, map<string, string> &mVars) {
+    string response = "";
+
+    for (int i=0, s=lis.size(); i<s; ++i) {
+        Li* li = dynamic_cast<Li*>(lis[i]);
+        Condition* cond = new Condition(li->name(), li->value(), li->children());
+
+        response += parse_condition(cl, cond, pattern, input, prevTemplate, mVars);
+    }
+
+    return response;
+}
+
+string parse_condition(CategoryList* cl, Condition* condition, Pattern* pattern, string input, string prevTemplate, map<string, string> &mVars) {
+    string name = condition->name();
+    string value = condition->value();
+    string getValue = parse_get(cl, new Get(name), pattern, input, prevTemplate, mVars);
+    vector<TemplateElement*> children = condition->children();
+
+    //cout << (getValue == value ? "true" : "false") << endl;
+
+    return getValue == value ? parse_template(cl, pattern, new Template(children), input, prevTemplate, mVars) : "";
 }
 
 string parse_think(CategoryList* cl, Think* think, Pattern* pattern, string input, string prevTemplate, map<string, string> &mVars) {
@@ -178,10 +224,12 @@ string parse_get(CategoryList* cl, Get* get, Pattern* pattern, string input, str
     return "";
 }
 
-string parse_set(CategoryList* cl, Set* set, string starText, Pattern* pattern, string input, string prevTemplate, map<string, string> &mVars) {
+string parse_set(CategoryList* cl, Set* set, string value, Pattern* pattern, string input, string prevTemplate, map<string, string> &mVars) {
     TiXmlDocument doc;
     TiXmlElement* root;
     string varsPath = "database/vars.xml";
+
+    //cout << "parse_set() : " << value << endl;
 
     if (!doc.LoadFile(varsPath.c_str())) {
         cerr << doc.ErrorDesc() << " " << varsPath << endl;
@@ -202,7 +250,7 @@ string parse_set(CategoryList* cl, Set* set, string starText, Pattern* pattern, 
 
     TiXmlElement * e = new TiXmlElement("var");
     e->SetAttribute("name", set->name().c_str());
-    e->LinkEndChild(new TiXmlText(starText.c_str()));
+    e->LinkEndChild(new TiXmlText(value.c_str()));
 
     element->LinkEndChild(e);
     doc2.LinkEndChild(decl);
@@ -220,7 +268,7 @@ string parse_set(CategoryList* cl, Set* set, string starText, Pattern* pattern, 
 
     doc2.SaveFile(varsPath.c_str());
 
-    return starText;
+    return value;
 }
 
 string parse_srai(CategoryList* cl, Srai* srai, Pattern* pattern, string input, string prevTemplate, map<string, string> &mVars) {
