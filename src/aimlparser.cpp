@@ -113,10 +113,9 @@ string parse_template(CategoryList* cl, Pattern* pattern, Template* templ, strin
 
 string parse_think(CategoryList* cl, Think* think, Pattern* pattern, string input, string prevTemplate, map<string, string> &mVars) {
     vector<TemplateElement*> children = think->children();
+    Template* templ = new Template(children);
 
-    for (int i=0, s=children.size(); i<s; ++i) {
-        
-    }
+    parse_template(cl, pattern, templ, input, prevTemplate, mVars);
 
     return "";
 }
