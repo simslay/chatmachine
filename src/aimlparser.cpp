@@ -27,6 +27,7 @@ using namespace std;
 
 #define TIXML_USE_STL
 
+extern vector<CategoryList*> cls;
 Topic* topic;
 
 lev_pat_templ parse_categoryList(CategoryList* cl, string input, string prevTemplate, map<string, string> &mVars) {
@@ -87,9 +88,9 @@ string parse_template(CategoryList* cl, Pattern* pattern, Template* templ, strin
             //cout << response << endl;
             response += t->toString() + " ";
         } else if (Srai* srai = dynamic_cast<Srai*>(te)) {
-            //cout << "parse_template srai" << endl;
+            cout << "parse_template srai" << endl;
             response += parse_srai(cl, srai, pattern, input, prevTemplate, mVars) + " ";
-            //cout << "parse_template srai response=" << response << endl;
+            cout << "parse_template srai response=" << response << endl;
         } else if (Star* star = dynamic_cast<Star*>(te)) {
             //cout << "parse_template star" << endl;
             response += parse_star(cl, star, pattern, input, prevTemplate, mVars) + " ";
@@ -305,11 +306,45 @@ string parse_srai(CategoryList* cl, Srai* srai, Pattern* pattern, string input, 
     children = srai->children();
     templ = new Template(children);
 
-    sTempl = parse_template(cl, pattern, templ, input, prevTemplate, mVars);
+    // cout << cls.size() << endl;
+
+    for(unsigned int i=0, clss=cls.size(); i<clss; ++i) {
+        CategoryList* cl = cls[i];
+
+        cout <<  cl->file() << endl;
+        cout << i << endl;
+
+        sTempl = parse_template(cl, pattern, templ, input, prevTemplate, mVars);
+
+        lev_pat_templ lpt = parse_categoryList(cl, sTempl, prevTemplate, mVars);
+
+        // response = lpt.templ->toString();
+
+        if (lpt.templ->toString() == "") {
+            cout << "continue" << endl;
+            continue;
+        }
+
+        response = parse_template(cl, pattern, lpt.templ, input, prevTemplate, mVars);
+
+        cout << "pattern : " + pattern->toString() << endl;
+        cout << "lpt.pat : " + lpt.pat->toString() << endl;
+        cout << "response : " + response << endl;
+
+        if (response != "") {
+            //cout << response << endl;
+            break;
+        }
+
+        // cout << cl->file() << endl;
+        // cout << i << endl;
+    }
+
+    /*sTempl = parse_template(cl, pattern, templ, input, prevTemplate, mVars);
 
     lev_pat_templ lpt = parse_categoryList(cl, sTempl, prevTemplate, mVars);
 
-    response = lpt.templ->toString();
+    response = lpt.templ->toString();*/
 
     return response;
 }

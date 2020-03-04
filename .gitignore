@@ -36,3 +36,4 @@ database/
 *.cbp
 *.layout
 *.depend
+.vscode/
