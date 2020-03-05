@@ -90,8 +90,10 @@ string basicAimlFiles[] = {
     "condition",
     "default",
     "random",
+    "salutations",
     "setget",
     "srai",
+    "srai_star",
     "star",
     "that",
     "think",
@@ -175,6 +177,8 @@ void Chatmachine::respond() {
         cout << sBotPrompt << "You have already said that." << endl;
         return;
     }
+
+    shuffle();
 
     response = get_response(m_sInput);
 
@@ -286,4 +290,23 @@ void Chatmachine::createCategoryLists() {
 
     //to do
     //cout << cl << endl;
+}
+
+void Chatmachine::shuffle() {
+    srand(time(NULL));
+
+    vector<CategoryList*> cls_;
+
+    for(unsigned int i=0, s=cls.size(); i<s; ++i) {
+        cls_.push_back(cls[i]);
+    }
+
+    cls.clear();
+
+    while(cls_.size() > 0) {
+        unsigned int i = rand() % cls_.size();
+
+        cls.push_back(cls_[i]);
+        cls_.erase(cls_.begin() + i);
+    }
 }

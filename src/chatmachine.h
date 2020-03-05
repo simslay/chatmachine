@@ -25,6 +25,7 @@ private:
     string get_best_response(string input);
     void setResponse(string sResponse);
     void prepare_response(string &resp);
+    void shuffle();
 
 private:
     string m_sChatBotName;
