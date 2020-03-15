@@ -6,8 +6,8 @@ At root of project, make the directories obj/, database/Alice/ (download aiml fi
 
 Enter commands :
 
-make clean
-make
+make clean<br/>
+make<br/>
 ./chatmachine9 alice
 
 ## Contributing
