@@ -1,6 +1,6 @@
 # chatmachine
 
-A chatbot in C++.
+A chatbot in C++. (incomplete application)
 
 At root of project, make the directories obj/, database/Alice/ (download aiml files from ALICE project : https://github.com/Urthen/aiml-en-us-foundation-alice.v1-4)
 
